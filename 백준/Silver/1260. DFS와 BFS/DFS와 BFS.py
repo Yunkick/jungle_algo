@@ -10,8 +10,9 @@ for _ in range(M):
     a, b = map(int,sys.stdin.readline().split())
     graph[a].append(b)
     graph[b].append(a)
-    graph[a].sort()
-    graph[b].sort()
+
+for i in range(1, N+1):
+    graph[i].sort()
 
 def DFS(v):
     visited1[v] = 1
