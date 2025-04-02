@@ -1,38 +1,35 @@
 import sys
 from collections import deque
-
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-
 N, M = map(int,sys.stdin.readline().split())
 
-graph = []
-
+graph  = []
 
 for _ in range(N):
-    b = list(map(int, list(sys.stdin.readline().strip())))
-    graph.append(b)
+    a = list(map(int,sys.stdin.readline().strip()))
+    graph.append(a)
 
-
-def BFS(x,y):
+def BFS(x,y): # BFS는 무조건 큐를 사용 한다는걸 알아야함
     queue = deque()
     queue.append((x,y))
 
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
+
     while queue:
-        x, y = queue.popleft()
+        x,y = queue.popleft()
 
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
 
-            if nx < 0 or nx >=N or ny < 0 or ny >= M:
+            if nx < 0 or ny < 0 or ny >= M or nx >= N:
                 continue
 
             if graph[nx][ny] == 1:
                 graph[nx][ny] = graph[x][y] + 1
-                queue.append((nx, ny))
+                queue.append((nx,ny))
 
-            if nx == N-1 and ny == M-1:
-                return graph[nx][ny]
 
-print(BFS(0,0))   
+    return graph[N-1][M-1]
+
+print(BFS(0,0))
