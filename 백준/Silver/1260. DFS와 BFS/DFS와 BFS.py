@@ -1,35 +1,39 @@
 import sys
+from collections import deque
+N, M, V = map(int,sys.stdin.readline().split())
 
-N , M, V = map(int,sys.stdin.readline().split())
+graph= [[] for _ in range(N+1)]
+visited1 = [0] * (N+1)
+visited2 = [0] * (N+1)
 
-graph = [[0] * (N+1) for _ in range(N+1)]
-visit1 = [0] * (N+1)
-visit2 = visit1.copy()
 for _ in range(M):
     a, b = map(int,sys.stdin.readline().split())
-    graph[a][b] = 1
-    graph[b][a] = 1
+    graph[a].append(b)
+    graph[b].append(a)
+    graph[a].sort()
+    graph[b].sort()
 
-def dfs(v):
-    visit1[v] = 1
-    print(v , end=' ')
-    for i in range(1, N+1):
-        if graph[v][i] and visit1[i] == 0:
-            dfs(i)
+def DFS(v):
+    visited1[v] = 1
+    print(v, end=' ')
+    for i in graph[v]:
+        if not visited1[i]:
+            DFS(i)
 
-def bfs(v):
-    queue = [v]
-    visit2[v] = 1
+def BFS(v):
+    visited2[v] = 1
+    queue = deque([v])
+    
     while queue:
-        v = queue.pop(0)
-        print(v, end=' ')
-        for i in range(1, N+1):
-            if graph[v][i] and visit2[i] == 0:
+        node = queue.popleft()
+        print(node, end = ' ')
+        for i in graph[node]:
+            if visited2[i] == 0:
+                visited2[i] = 1
                 queue.append(i)
-                visit2[i] = 1
 
 
 
-dfs(V)
+DFS(V)
 print()
-bfs(V)
+BFS(V)
